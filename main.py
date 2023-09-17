@@ -6,7 +6,10 @@ from psycopg2.extras import RealDictCursor
 import configparser
 
 
-app = FastAPI()
+app = FastAPI(
+    ssl_keyfile="/root/private.key",
+    ssl_certfile="/root/cert.crt"
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
