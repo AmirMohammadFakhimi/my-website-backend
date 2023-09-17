@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import configparser
@@ -13,6 +14,7 @@ app.add_middleware(
     allow_methods=['*'],
     allow_headers=['*'],
 )
+app.add_middleware(HTTPSRedirectMiddleware)
 
 config = configparser.ConfigParser()
 config.read('ConfigFile.ini')
