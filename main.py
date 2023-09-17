@@ -1,14 +1,18 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import configparser
 
+config = configparser.ConfigParser()
+config.read('ConfigFile.ini')
+
 
 app = FastAPI(
-    ssl_keyfile="/root/private.key",
-    ssl_certfile="/root/cert.crt"
+    ssl_certfile=config.get('CertificateSection', 'certificate_path'),
+    ssl_keyfile=config.get('CertificateSection', 'private_key_path')
 )
 app.add_middleware(
     CORSMiddleware,
@@ -17,11 +21,7 @@ app.add_middleware(
     allow_methods=['*'],
     allow_headers=['*'],
 )
-app.add_middleware(HTTPSRedirectMiddleware)
-
-config = configparser.ConfigParser()
-config.read('ConfigFile.ini')
-
+# app.add_middleware(HTTPSRedirectMiddleware)
 
 def get_database_config(option):
     global config
@@ -47,13 +47,13 @@ def run_query(query):
 
 
 @app.get('/educations')
-def read_root():
+def get_educations():
     educations = run_query('SELECT * FROM education ORDER BY id DESC')
     return {'educations': educations}
 
 
 @app.get('/experiences')
-def read_root():
+def get_experiences():
     experiences = run_query('SELECT * FROM experience ORDER BY id DESC')
 
     for experience in experiences:
@@ -65,24 +65,34 @@ def read_root():
 
 
 @app.get('/volunteering')
-def read_root():
+def get_volunteering():
     volunteering = run_query('SELECT * FROM volunteering ORDER BY id DESC')
     return {'volunteering': volunteering}
 
 
 @app.get('/projects')
-def read_root():
+def get_projects():
     projects = run_query('SELECT * FROM project ORDER BY id DESC')
     return {'projects': projects}
 
 
 @app.get('/courses')
-def read_root():
+def get_courses():
     courses = run_query('SELECT * FROM course ORDER BY title')
     return {'courses': courses}
 
 
 @app.get('/licenses')
-def read_root():
+def get_licenses():
     licenses = run_query('SELECT * FROM license ORDER BY id DESC')
     return {'licenses': licenses}
+
+
+@app.get('/cv')
+def get_cv():
+    return FileResponse(path="Amir Mohammad's CV.pdf", filename="Amir Mohammad's CV.pdf", media_type='text/pdf')
+
+
+@app.get('/resume')
+def get_resume():
+    return FileResponse(path="Amir Mohammad's Resume.pdf", filename="Amir Mohammad's Resume.pdf", media_type='text/pdf')
