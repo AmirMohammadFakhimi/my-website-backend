@@ -23,6 +23,7 @@ app.add_middleware(
 )
 app.add_middleware(HTTPSRedirectMiddleware)
 
+
 def get_database_config(option):
     global config
     return config.get('DatabaseSection', option)
