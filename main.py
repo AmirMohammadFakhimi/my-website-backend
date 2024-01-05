@@ -97,3 +97,8 @@ def get_cv():
 @app.get('/resume')
 def get_resume():
     return FileResponse(path="Amir Mohammad's Resume.pdf", filename="Amir Mohammad's Resume.pdf", media_type='text/pdf')
+
+
+@app.get('/photos/{photo_name}')
+def get_resume(photo_name: str):
+    return FileResponse(path=f'photos/{photo_name}', filename=f'photos/{photo_name}', media_type='image/jpeg')
