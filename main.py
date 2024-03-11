@@ -100,5 +100,5 @@ def get_resume():
 
 
 @app.get('/photos/{photo_name}')
-def get_resume(photo_name: str):
+def get_photo(photo_name: str):
     return FileResponse(path=f'photos/{photo_name}', filename=f'photos/{photo_name}', media_type='image/jpeg')
