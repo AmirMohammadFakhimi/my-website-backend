@@ -58,9 +58,9 @@ def get_experiences():
     experiences = run_query('SELECT * FROM experience ORDER BY id DESC')
 
     for experience in experiences:
-        projects = run_query(f'SELECT * FROM experience_project WHERE '
-                             f'experience_project.experience = {experience["id"]} ORDER BY id')
-        experience['projects'] = projects
+        projects = run_query(f'SELECT * FROM experience_media WHERE '
+                             f'experience_media.experience = {experience["id"]} ORDER BY id')
+        experience['medias'] = projects
 
     return {'experiences': experiences}
 
