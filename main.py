@@ -69,7 +69,7 @@ def get_experiences():
 def get_volunteering():
     volunteering = run_query('SELECT * FROM volunteering ORDER BY id DESC')
     for volunteer in volunteering:
-        volunteer['label'] = volunteer['label'].strip('{}').replace('"', '').split(',')
+        volunteer['labels'] = volunteer['labels'].strip('{}').replace('"', '').split(',')
 
     return {'volunteering': volunteering}
 
