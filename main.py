@@ -65,6 +65,12 @@ def get_experiences():
     return {'experiences': experiences}
 
 
+@app.get('/laboratories')
+def get_educations():
+    laboratories = run_query('SELECT * FROM laboratory ORDER BY id DESC')
+    return {'laboratories': laboratories}
+
+
 @app.get('/volunteering')
 def get_volunteering():
     volunteering = run_query('SELECT * FROM volunteering ORDER BY id DESC')
