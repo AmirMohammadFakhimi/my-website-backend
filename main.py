@@ -1,14 +1,14 @@
+import configparser
+
+import psycopg2
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
-import psycopg2
+from fastapi.responses import FileResponse
 from psycopg2.extras import RealDictCursor
-import configparser
 
 config = configparser.ConfigParser()
 config.read('ConfigFile.ini')
-
 
 app = FastAPI(
     ssl_certfile=config.get('CertificateSection', 'certificate_path'),
@@ -58,9 +58,9 @@ def get_experiences():
     experiences = run_query('SELECT * FROM experience ORDER BY id DESC')
 
     for experience in experiences:
-        projects = run_query(f'SELECT * FROM experience_media WHERE '
-                             f'experience_media.experience = {experience["id"]} ORDER BY id')
-        experience['medias'] = projects
+        medias = run_query(f'SELECT * FROM experience_media WHERE '
+                           f'experience_media.experience = {experience["id"]} ORDER BY id')
+        experience['medias'] = medias
 
     return {'experiences': experiences}
 
@@ -68,8 +68,14 @@ def get_experiences():
 @app.get('/volunteering')
 def get_volunteering():
     volunteering = run_query('SELECT * FROM volunteering ORDER BY id DESC')
+
     for volunteer in volunteering:
         volunteer['labels'] = volunteer['labels'].strip('{}').replace('"', '').split(',')
+
+    for volunteer in volunteering:
+        medias = run_query(f'SELECT * FROM volunteering_media WHERE '
+                           f'volunteering_media.volunteering = {volunteer["id"]} ORDER BY id')
+        volunteer['medias'] = medias
 
     return {'volunteering': volunteering}
 
