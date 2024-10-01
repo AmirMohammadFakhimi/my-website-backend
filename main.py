@@ -97,7 +97,7 @@ def get_projects():
 
 @app.get('/courses')
 def get_courses():
-    courses = run_query('SELECT * FROM course ORDER BY title')
+    courses = run_query('SELECT * FROM course ORDER BY id DESC')
     return {'courses': courses}
 
 
