@@ -89,6 +89,9 @@ def get_volunteering():
 @app.get('/projects')
 def get_projects():
     projects = run_query('SELECT * FROM project ORDER BY id DESC')
+    for project in projects:
+        project['labels'] = project['labels'].strip('{}').replace('"', '').split(',')
+
     return {'projects': projects}
 
 
