@@ -102,8 +102,8 @@ def get_courses():
 
 
 @app.get('/honors-and-certificates')
-def get_licenses():
-    honors_and_certificates = run_query('SELECT * FROM license ORDER BY id DESC')
+def get_honors_and_certificates():
+    honors_and_certificates = run_query('SELECT * FROM honor_and_certificate ORDER BY id DESC')
     return {'honors_and_certificates': honors_and_certificates}
 
 
