@@ -101,7 +101,7 @@ def get_courses():
     return {'courses': courses}
 
 
-@app.get('/licenses')
+@app.get('/honors-and-certificates')
 def get_licenses():
     licenses = run_query('SELECT * FROM license ORDER BY id DESC')
     return {'licenses': licenses}
