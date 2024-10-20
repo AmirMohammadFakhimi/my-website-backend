@@ -107,14 +107,10 @@ def get_honors_and_certificates():
     return {'honors_and_certificates': honors_and_certificates}
 
 
-@app.get('/cv')
-def get_cv():
-    return FileResponse(path="Amir Mohammad's CV.pdf", filename="Amir Mohammad's CV.pdf", media_type='text/pdf')
-
-
 @app.get('/resume')
 def get_resume():
-    return FileResponse(path="Amir Mohammad's Resume.pdf", filename="Amir Mohammad's Resume.pdf", media_type='text/pdf')
+    return FileResponse(path="Amir Mohammad Fakhimi's Resume.pdf", filename="Amir Mohammad Fakhimi's Resume.pdf",
+                        media_type='text/pdf')
 
 
 @app.get('/photos/{photo_name}')
