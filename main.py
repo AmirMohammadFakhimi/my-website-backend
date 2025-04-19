@@ -49,17 +49,17 @@ def run_query(query):
 
 @app.get('/educations')
 def get_educations():
-    educations = run_query('SELECT * FROM education ORDER BY id DESC')
+    educations = run_query('SELECT * FROM education ORDER BY id DESC;')
     return {'educations': educations}
 
 
 @app.get('/work-experiences')
 def get_experiences():
-    work_experiences = run_query('SELECT * FROM work_experiencce ORDER BY id DESC')
+    work_experiences = run_query('SELECT * FROM work_experiencce ORDER BY id DESC;')
 
     for work_experience in work_experiences:
         medias = run_query(f'SELECT * FROM work_experience_media WHERE '
-                           f'work_experience_media.experience = {work_experience["id"]} ORDER BY id')
+                           f'work_experience_media.experience = {work_experience["id"]} ORDER BY id;')
         work_experience['medias'] = medias
 
     return {'experiences': work_experiences}
@@ -67,20 +67,20 @@ def get_experiences():
 
 @app.get('/research-experiences')
 def get_educations():
-    research_experiences = run_query('SELECT * FROM research_experience ORDER BY id DESC')
+    research_experiences = run_query('SELECT * FROM research_experience ORDER BY id DESC;')
     return {'laboratories': research_experiences}
 
 
 @app.get('/volunteering')
 def get_volunteering():
-    volunteering = run_query('SELECT * FROM volunteering ORDER BY id DESC')
+    volunteering = run_query('SELECT * FROM volunteering ORDER BY id DESC;')
 
     for volunteer in volunteering:
         volunteer['labels'] = volunteer['labels'].strip('{}').replace('"', '').split(',')
 
     for volunteer in volunteering:
         medias = run_query(f'SELECT * FROM volunteering_media WHERE '
-                           f'volunteering_media.volunteering = {volunteer["id"]} ORDER BY id')
+                           f'volunteering_media.volunteering = {volunteer["id"]} ORDER BY id;')
         volunteer['medias'] = medias
 
     return {'volunteering': volunteering}
@@ -88,7 +88,7 @@ def get_volunteering():
 
 @app.get('/projects')
 def get_projects():
-    projects = run_query('SELECT * FROM project ORDER BY id DESC')
+    projects = run_query('SELECT * FROM project ORDER BY id DESC;')
     for project in projects:
         project['labels'] = project['labels'].strip('{}').replace('"', '').split(',')
 
@@ -97,13 +97,13 @@ def get_projects():
 
 @app.get('/courses')
 def get_courses():
-    courses = run_query('SELECT * FROM course ORDER BY id DESC')
+    courses = run_query('SELECT * FROM course ORDER BY id DESC;')
     return {'courses': courses}
 
 
 @app.get('/honors-and-certificates')
 def get_honors_and_certificates():
-    honors_and_certificates = run_query('SELECT * FROM honor_and_certificate ORDER BY id DESC')
+    honors_and_certificates = run_query('SELECT * FROM honor_and_certificate ORDER BY id DESC;')
     return {'honors_and_certificates': honors_and_certificates}
 
 
