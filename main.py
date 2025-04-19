@@ -53,22 +53,22 @@ def get_educations():
     return {'educations': educations}
 
 
-@app.get('/experiences')
+@app.get('/work-experiences')
 def get_experiences():
-    experiences = run_query('SELECT * FROM experience ORDER BY id DESC')
+    work_experiences = run_query('SELECT * FROM work_experiencce ORDER BY id DESC')
 
-    for experience in experiences:
-        medias = run_query(f'SELECT * FROM experience_media WHERE '
-                           f'experience_media.experience = {experience["id"]} ORDER BY id')
-        experience['medias'] = medias
+    for work_experience in work_experiences:
+        medias = run_query(f'SELECT * FROM work_experience_media WHERE '
+                           f'work_experience_media.experience = {work_experience["id"]} ORDER BY id')
+        work_experience['medias'] = medias
 
-    return {'experiences': experiences}
+    return {'experiences': work_experiences}
 
 
-@app.get('/laboratories')
+@app.get('/research-experiences')
 def get_educations():
-    laboratories = run_query('SELECT * FROM laboratory ORDER BY id DESC')
-    return {'laboratories': laboratories}
+    research_experiences = run_query('SELECT * FROM research_experience ORDER BY id DESC')
+    return {'laboratories': research_experiences}
 
 
 @app.get('/volunteering')
