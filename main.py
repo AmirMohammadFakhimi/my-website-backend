@@ -62,13 +62,13 @@ def get_experiences():
                            f'work_experience_media.experience = {work_experience["id"]} ORDER BY id;')
         work_experience['medias'] = medias
 
-    return {'experiences': work_experiences}
+    return {'work_experiences': work_experiences}
 
 
 @app.get('/research-experiences')
 def get_educations():
     research_experiences = run_query('SELECT * FROM research_experience ORDER BY id DESC;')
-    return {'laboratories': research_experiences}
+    return {'research_experiences': research_experiences}
 
 
 @app.get('/volunteering')
