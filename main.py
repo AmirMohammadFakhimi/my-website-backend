@@ -55,7 +55,7 @@ def get_educations():
 
 @app.get('/work-experiences')
 def get_experiences():
-    work_experiences = run_query('SELECT * FROM work_experiencce ORDER BY id DESC;')
+    work_experiences = run_query('SELECT * FROM work_experience ORDER BY id DESC;')
 
     for work_experience in work_experiences:
         medias = run_query(f'SELECT * FROM work_experience_media WHERE '
