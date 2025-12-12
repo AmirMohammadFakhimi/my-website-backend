@@ -109,8 +109,7 @@ def get_honors_and_certificates():
 
 @app.get('/resume')
 def get_resume():
-    return FileResponse(path="Amir Mohammad Fakhimi's Resume.pdf", filename="Amir Mohammad Fakhimi's Resume.pdf",
-                        media_type='text/pdf')
+    return FileResponse(path="Resume.pdf", filename="Resume.pdf", media_type='text/pdf')
 
 
 @app.get('/photos/{photo_name}')
