@@ -112,6 +112,11 @@ def get_resume():
     return FileResponse(path="Resume.pdf", filename="Resume.pdf", media_type='text/pdf')
 
 
+@app.get('/cv')
+def get_cv():
+    return FileResponse(path="CV.pdf", filename="CV.pdf", media_type='text/pdf')
+
+
 @app.get('/photos/{photo_name}')
 def get_photo(photo_name: str):
     return FileResponse(path=f'photos/{photo_name}', filename=f'photos/{photo_name}', media_type='image/jpeg')
