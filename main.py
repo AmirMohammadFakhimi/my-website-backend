@@ -53,22 +53,22 @@ def get_educations():
     return {'educations': educations}
 
 
-@app.get('/work-experiences')
-def get_experiences():
-    work_experiences = run_query('SELECT * FROM work_experience ORDER BY id DESC;')
+@app.get('/industry-experience')
+def get_industry_experience():
+    industry_experience = run_query('SELECT * FROM industry_experience ORDER BY id DESC;')
 
-    for work_experience in work_experiences:
-        medias = run_query(f'SELECT * FROM work_experience_media WHERE '
-                           f'work_experience_media.experience = {work_experience["id"]} ORDER BY id;')
-        work_experience['medias'] = medias
+    for industry_experience in industry_experience:
+        medias = run_query(f'SELECT * FROM industry_experience_media WHERE '
+                           f'industry_experience_media.experience = {industry_experience["id"]} ORDER BY id;')
+        industry_experience['medias'] = medias
 
-    return {'work_experiences': work_experiences}
+    return {'industry_experience': industry_experience}
 
 
-@app.get('/research-experiences')
-def get_educations():
-    research_experiences = run_query('SELECT * FROM research_experience ORDER BY id DESC;')
-    return {'research_experiences': research_experiences}
+@app.get('/research-experience')
+def get_research_experience():
+    research_experience = run_query('SELECT * FROM research_experience ORDER BY id DESC;')
+    return {'research_experience': research_experience}
 
 
 @app.get('/volunteering')
