@@ -57,10 +57,10 @@ def get_educations():
 def get_industry_experience():
     industry_experience = run_query('SELECT * FROM industry_experience ORDER BY id DESC;')
 
-    for industry_experience in industry_experience:
+    for current_industry_experience in industry_experience:
         medias = run_query(f'SELECT * FROM industry_experience_media WHERE '
-                           f'industry_experience_media.experience = {industry_experience["id"]} ORDER BY id;')
-        industry_experience['medias'] = medias
+                           f'industry_experience_media.experience = {current_industry_experience["id"]} ORDER BY id;')
+        current_industry_experience['medias'] = medias
 
     return {'industry_experience': industry_experience}
 
