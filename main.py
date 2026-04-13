@@ -1,18 +1,44 @@
 import configparser
+from contextlib import asynccontextmanager
 
 import psycopg2
+from psycopg2.pool import ThreadedConnectionPool
+from psycopg2.extras import RealDictCursor
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from fastapi.responses import FileResponse
-from psycopg2.extras import RealDictCursor
 
 config = configparser.ConfigParser()
 config.read('ConfigFile.ini')
 
+pool = None
+
+
+def db_kwargs():
+    return {
+        'database': config.get('DatabaseSection', 'database'),
+        'user': config.get('DatabaseSection', 'user'),
+        'password': config.get('DatabaseSection', 'password'),
+        'host': config.get('DatabaseSection', 'host'),
+        'port': config.get('DatabaseSection', 'port'),
+    }
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global pool
+    pool = ThreadedConnectionPool(1, 10, **db_kwargs())
+    try:
+        yield
+    finally:
+        pool.closeall()
+
+
 app = FastAPI(
+    lifespan=lifespan,
     ssl_certfile=config.get('CertificateSection', 'certificate_path'),
-    ssl_keyfile=config.get('CertificateSection', 'private_key_path')
+    ssl_keyfile=config.get('CertificateSection', 'private_key_path'),
 )
 app.add_middleware(
     CORSMiddleware,
@@ -24,27 +50,18 @@ app.add_middleware(
 app.add_middleware(HTTPSRedirectMiddleware)
 
 
-def get_database_config(option):
-    global config
-    return config.get('DatabaseSection', option)
-
-
-connection = psycopg2.connect(database=get_database_config('database'),
-                              user=get_database_config('user'),
-                              password=get_database_config('password'),
-                              host=get_database_config('host'),
-                              port=get_database_config('port'))
-
-
-def run_query(query):
-    global connection
-
-    cursor = connection.cursor(cursor_factory=RealDictCursor)
-    cursor.execute(query)
-    result = cursor.fetchall()
-    cursor.close()
-
-    return result
+def run_query(query, params=None):
+    conn = pool.getconn()
+    try:
+        conn.autocommit = True
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(query, params)
+            return cursor.fetchall()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        pool.putconn(conn, close=bool(conn.closed))
 
 
 @app.get('/educations')
